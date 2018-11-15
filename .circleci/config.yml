@@ -36,7 +36,7 @@ jobs:
           name: set test execution server and execute tests
           working_directory: ~/repo/zm-soap-harness
           command: |
-            sed -i 's/localhost/zdev-vm011.eng.zimbra.com/g' ~/repo/zm-soap-harness/conf/global.properties
+            sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
             ant clean build-soap-data-file Run-SoapTestCore
       - store_artifacts:
             name: Store artifacts
