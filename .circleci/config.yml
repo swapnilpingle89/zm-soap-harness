@@ -32,13 +32,14 @@ jobs:
           working_directory: ~/repo/zm-soap-harness
           command: |
             sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
+            sed -i 's/zimbra.com/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
             ant clean build-soap-data-file Run-SoapTestCore
       - store_artifacts:
             name: Store artifacts
-            path: ~/zm-soap-harness/soapvalidator
+            path: ~/repo/zm-soap-harness/soapvalidator
       - store_test_results:
             name: Store rest results
-            path: ~/zm-soap-harness/soapvalidator
+            path: ~/repo/zm-soap-harness/soapvalidator
 
 ######################################################################################
 workflows:
