@@ -5,6 +5,9 @@ executors:
     shell: /bin/bash
     docker:
       - image: circleci/openjdk:8-jdk
+    environment:
+       - ANT_OPTS: -Dzimbra.buildinfo.version=8.7.6_GA
+       - BUILD: "/home/circleci/repo/.zcs-deps"
 
 persist-workspace: &persist-workspace
   persist_to_workspace:
