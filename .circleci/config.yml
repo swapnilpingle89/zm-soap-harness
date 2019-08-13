@@ -25,17 +25,7 @@ jobs:
             command: |
                git clone https://github.com/Zimbra/zm-zcs.git ~/repo/zm-zcs
                git clone https://github.com/Zimbra/zimbra-package-stub.git ~/repo/zimbra-package-stub
-               git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox       
-
-         - *persist-workspace
-
-   setup_env:
-      executor: default-executor 
-      steps:
-         - *attach-workspace
-         - run:
-            working_directory: /home/circleci/
-            command: |
+               git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox    
                mkdir -p /home/circleci/.zcs-deps
                mkdir -p /home/circleci/.ivy2/cache
                wget https://files.zimbra.com/repository/ant-contrib/ant-contrib-1.0b1.jar
@@ -51,8 +41,6 @@ jobs:
             command:
                ant publish-local-all -Dzimbra.buildinfo.version=8.8.0_GA
               
-         - *persist-workspace
-
    set_test_configs:
        executor: default-executor
        steps:
@@ -61,9 +49,7 @@ jobs:
           - run:
              sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
              sed -i 's/zimbra.com/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
-
-          - *persist-workspace
-
+       
    execute_tests:
       executor: default-executor 
       steps:
@@ -71,19 +57,14 @@ jobs:
          - run:
              ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
 
-         - *persist-workspace
-
 workflows :
    version: 2
    main:
       jobs: 
          - clone_repos
-         - setup_env :
-            requires:
-               - clone_repos 
          - build_dependencies :
             requires:
-               - setup_env 
+               - clone_repos 
          - set_test_configs :
             requires:
                - build_dependencies 
