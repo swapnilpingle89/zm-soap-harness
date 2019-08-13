@@ -10,7 +10,7 @@ persist-workspace: &persist-workspace
   persist_to_workspace:
     root: ~/
     paths:
-      - ~/
+      - repo
 
 attach-workspace: &attach-workspace
   attach_workspace:
