@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 executors:
   default-executor:
     working_directory: ~/
@@ -65,7 +65,7 @@ jobs:
              ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
 
 workflows :
-   version: 2
+   version: 2.1
    main:
       jobs: 
          - clone_repos
