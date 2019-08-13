@@ -1,74 +1,49 @@
-version: 2.1
-executors:
-  default-executor:
-    working_directory: ~/
-    shell: /bin/bash
+# Java Maven CircleCI 2.1 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+# 
+version: 2
+jobs:
+  test: 
     docker:
       - image: circleci/openjdk:8-jdk
+    steps:
+      - run:
+          name: checkout zm-zcs, zimbra-package-stub, zm-mailbox, zm-soap-harness repo
+          working_directory: ~/repo
+          command: |
+            git clone https://github.com/Zimbra/zm-zcs.git ~/repo/zm-zcs
+            git clone https://github.com/Zimbra/zimbra-package-stub.git ~/repo/zimbra-package-stub
+            git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox       
+            git clone https://github.com/Zimbra/zm-soap-harness.git ~/repo/zm-soap-harness
+      - run:
+          name: create required folders and download ant-contrib jar
+          working_directory: ~/.zcs-deps
+          command: |
+            mkdir -p ~/.zcs-deps
+            mkdir -p ~/.ivy2/cache
+            wget https://files.zimbra.com/repository/ant-contrib/ant-contrib-1.0b1.jar
+      - run: 
+          name: build mailbox 
+          working_directory: ~/repo/zm-mailbox
+          command: ant publish-local-all -Dzimbra.buildinfo.version=8.8.0_GA
+      - run: 
+          name: set test execution server and execute tests
+          working_directory: ~/repo/zm-soap-harness
+          command: |
+            sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
+            sed -i 's/zimbra.com/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
+            ant clean build-soap-data-file Run-SoapTestCore
+      - store_artifacts:
+            name: Store artifacts
+            path: ~/repo/zm-soap-harness/soapvalidator
+      - store_test_results:
+            name: Store rest results
+            path: ~/repo/zm-soap-harness/soapvalidator
 
-persist-workspace: &persist-workspace
-  persist_to_workspace:
-    root: ~/
-    paths:
-      - repo
-
-attach-workspace: &attach-workspace
-  attach_workspace:
-    at: ~/
-
-jobs:
-   clone_repos:
-      executor: default-executor
-      steps:
-         - run:
-            working_directory: ~/repo
-            command: |
-               git clone https://github.com/Zimbra/zm-zcs.git ~/repo/zm-zcs
-               git clone https://github.com/Zimbra/zimbra-package-stub.git ~/repo/zimbra-package-stub
-               git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox    
-               mkdir -p ~/repo/.zcs-deps
-               mkdir -p ~/repo/.ivy2/cache
-               cd ~/repo/.zcs-deps
-               wget https://files.zimbra.com/repository/ant-contrib/ant-contrib-1.0b1.jar
-
-         - *persist-workspace
-
-   build_dependencies:
-      executor: default-executor 
-      steps:
-         - *attach-workspace
-         - run:
-            working_directory: ~/repo/zm-mailbox
-            command:
-               ant publish-local-all -Ddev.home=~/repo -Dzimbra.buildinfo.version=8.8.0_GA
-              
-   set_test_configs:
-       executor: default-executor
-       steps:
-          - *attach-workspace 
-          - checkout
-          - run:
-             sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
-             sed -i 's/zimbra.com/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
-       
-   execute_tests:
-      executor: default-executor 
-      steps:
-         - *attach-workspace
-         - run:
-             ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
-
-workflows :
+######################################################################################
+workflows:
    version: 2
    main:
-      jobs: 
-         - clone_repos
-         - build_dependencies :
-            requires:
-               - clone_repos 
-         - set_test_configs :
-            requires:
-               - build_dependencies 
-         - execute_tests :
-            requires:
-               - set_test_configs  
+    jobs:
+      - test:
