@@ -26,8 +26,9 @@ jobs:
                git clone https://github.com/Zimbra/zm-zcs.git ~/repo/zm-zcs
                git clone https://github.com/Zimbra/zimbra-package-stub.git ~/repo/zimbra-package-stub
                git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox    
-               mkdir -p /home/circleci/.zcs-deps
-               mkdir -p /home/circleci/.ivy2/cache
+               mkdir -p ~/.zcs-deps
+               mkdir -p ~/.ivy2/cache
+               cd ~/.zcs-deps
                wget https://files.zimbra.com/repository/ant-contrib/ant-contrib-1.0b1.jar
 
          - *persist-workspace
