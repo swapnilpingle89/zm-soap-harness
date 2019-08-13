@@ -68,7 +68,7 @@ workflows :
    version: 2
    main:
       jobs: 
-         - clone_repos:
+         - clone_repos
          - setup_env :
             requires:
                - clone_repos 
