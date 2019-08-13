@@ -53,7 +53,7 @@ jobs:
               working_directory: ~/repo/zm-soap-harness
               command: |
                 sudo apt-get update; sudo apt-get install ant-contrib;
-                ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
+                sudo ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
 
 workflows :
    version: 2
