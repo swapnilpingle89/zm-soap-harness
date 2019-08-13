@@ -54,10 +54,10 @@ workflows :
    version: 2
    main:
       jobs: 
-         - clone_repos
+         - setup_prerequisites
          - set_test_configs :
             requires:
-               - clone_repos 
+               - setup_prerequisites
          - execute_tests :
             requires:
                - set_test_configs  
