@@ -23,7 +23,7 @@ jobs:
          - run:
             working_directory: ~/repo
             command: |
-               git clone https://github.com/Zimbra/zm-soap-harness.git ~/repo/zm-soap-harness
+               git clone https://github.com/swapnilpingle89/zm-soap-harness.git ~/repo/zm-soap-harness
                git clone https://github.com/Zimbra/zm-zcs.git ~/repo/zm-zcs
                git clone https://github.com/Zimbra/zimbra-package-stub.git ~/repo/zimbra-package-stub
                git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox
