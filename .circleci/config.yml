@@ -50,7 +50,7 @@ jobs:
       steps:
          - *attach-workspace
          - run:
-              working_directory: ~/repo
+              working_directory: ~/repo/zm-soap-harness
               command: ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
 
 workflows :
