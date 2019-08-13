@@ -26,9 +26,9 @@ jobs:
                git clone https://github.com/Zimbra/zm-zcs.git ~/repo/zm-zcs
                git clone https://github.com/Zimbra/zimbra-package-stub.git ~/repo/zimbra-package-stub
                git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox    
-               mkdir -p ~/.zcs-deps
-               mkdir -p ~/.ivy2/cache
-               cd ~/.zcs-deps
+               mkdir -p ~/repo/.zcs-deps
+               mkdir -p ~/repo/.ivy2/cache
+               cd ~/repo/.zcs-deps
                wget https://files.zimbra.com/repository/ant-contrib/ant-contrib-1.0b1.jar
 
          - *persist-workspace
@@ -40,7 +40,7 @@ jobs:
          - run:
             working_directory: ~/repo/zm-mailbox
             command:
-               ant publish-local-all -Ddev.home=~/ -Dzimbra.buildinfo.version=8.8.0_GA
+               ant publish-local-all -Ddev.home=~/repo -Dzimbra.buildinfo.version=8.8.0_GA
               
    set_test_configs:
        executor: default-executor
