@@ -28,7 +28,7 @@ jobs:
                git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox    
                mkdir -p /home/circleci/repo/.zcs-deps
                mkdir -p /home/circleci/repo/.ivy2/cache
-               sudo apt-get update; sudo apt-get install ant; sudo apt-get install ant-contrib
+               sudo apt-get update; sudo apt-get install ant-contrib;
 
          - *persist-workspace
 
@@ -39,7 +39,7 @@ jobs:
          - run:
             working_directory: ~/repo/zm-mailbox
             command:
-               sudo ant publish-local-all -Ddev.home=~/repo -Dzimbra.buildinfo.version=8.8.0_GA
+               sudo ant publish-local-all -Dzimbra.buildinfo.version=8.8.0_GA
               
    set_test_configs:
        executor: default-executor
