@@ -34,10 +34,10 @@ jobs:
       steps:
          - *attach-workspace
          - run:
-            working_directory: ~/
+            working_directory: /home/circleci/
             command: |
-               mkdir -p .zcs-deps
-               mkdir -p ~/.ivy2/cache
+               mkdir -p /home/circleci/.zcs-deps
+               mkdir -p /home/circleci/.ivy2/cache
                wget https://files.zimbra.com/repository/ant-contrib/ant-contrib-1.0b1.jar
 
          - *persist-workspace
