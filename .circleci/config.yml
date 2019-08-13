@@ -17,7 +17,7 @@ attach-workspace: &attach-workspace
     at: ~/
 
 jobs:
-   clone_repos:
+   setup_prerequisites:
       executor: default-executor
       steps:
          - run:
@@ -25,7 +25,8 @@ jobs:
             command: |
                git clone https://github.com/Zimbra/zm-zcs.git ~/repo/zm-zcs
                git clone https://github.com/Zimbra/zimbra-package-stub.git ~/repo/zimbra-package-stub
-               git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox    
+               git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox
+               git clone https://github.com/Zimbra/zm-soap-harness.git ~/repo/zm-soap-harness
                mkdir -p /home/circleci/repo/.zcs-deps
                mkdir -p /home/circleci/repo/.ivy2/cache
                sudo apt-get update; sudo apt-get install ant-contrib;
@@ -38,7 +39,6 @@ jobs:
        executor: default-executor
        steps:
           - *attach-workspace 
-          - checkout
           - run:
              sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
              sed -i 's/zimbra.com/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
