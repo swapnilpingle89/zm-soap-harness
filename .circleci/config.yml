@@ -2,7 +2,7 @@ version: 2.1
 executors:
   default-executor:
     working_directory: ~/
-    shell: /bin/bash
+    shell: /bin/sh
     docker:
       - image: circleci/openjdk:8-jdk
 
@@ -26,9 +26,9 @@ jobs:
                git clone https://github.com/Zimbra/zm-zcs.git ~/repo/zm-zcs
                git clone https://github.com/Zimbra/zimbra-package-stub.git ~/repo/zimbra-package-stub
                git clone https://github.com/Zimbra/zm-mailbox.git ~/repo/zm-mailbox    
-               mkdir -p ~/repo/.zcs-deps
-               mkdir -p ~/repo/.ivy2/cache
-               sudo apt-get update; sudo apt-get install ant-contrib
+               mkdir -p /home/circleci/repo/.zcs-deps
+               mkdir -p /home/circleci/repo/.ivy2/cache
+               sudo apt-get update; sudo apt-get install ant; sudo apt-get install ant-contrib
 
          - *persist-workspace
 
