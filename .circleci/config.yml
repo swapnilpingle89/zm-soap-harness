@@ -66,17 +66,18 @@ jobs:
 
 workflows :
    version: 2
-   jobs: 
-      - clone_repos:
-      - setup_env :
-         requires:
-            - clone_repos 
-      - build_dependencies :
-         requires:
-            - setup_env 
-      - set_test_configs :
-         requires:
-            - build_dependencies 
-      - execute_tests :
-         requires:
-            - set_test_configs 
+   main:
+      jobs: 
+         - clone_repos:
+         - setup_env :
+            requires:
+               - clone_repos 
+         - build_dependencies :
+            requires:
+               - setup_env 
+         - set_test_configs :
+            requires:
+               - build_dependencies 
+         - execute_tests :
+            requires:
+               - set_test_configs  
