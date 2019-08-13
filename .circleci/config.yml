@@ -34,10 +34,11 @@ jobs:
       steps:
          - *attach-workspace
          - run:
-            working_directory: ~/.zcs-deps
+            working_directory: ~/
             command: |
-               mkdir -p .zcs-deps
                mkdir -p ~/.ivy2/cache
+               mkdir -p ~/.zcs-deps
+               cd ~/.zcs-deps
                wget https://files.zimbra.com/repository/ant-contrib/ant-contrib-1.0b1.jar
 
    build_dependencies:
