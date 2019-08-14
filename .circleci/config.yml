@@ -34,6 +34,7 @@ jobs:
                sudo ant publish-local-all -Dzimbra.buildinfo.version=8.8.0_GA
                sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
                sed -i 's/zimbra.com/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
+               cd ~/repo/zm-soap-harness
                sudo ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
 
          - *persist-workspace
