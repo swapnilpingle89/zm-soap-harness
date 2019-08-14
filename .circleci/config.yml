@@ -32,37 +32,14 @@ jobs:
                sudo apt-get update; sudo apt-get install ant-contrib;
                cd ./zm-mailbox
                sudo ant publish-local-all -Dzimbra.buildinfo.version=8.8.0_GA
+               sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
+               sed -i 's/zimbra.com/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
+               sudo ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
 
          - *persist-workspace
-
-   set_test_configs:
-       executor: default-executor
-       steps:
-          - *attach-workspace 
-          - run:
-               working_directory: ~/repo
-               command: |
-                  sed -i 's/localhost/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
-                  sed -i 's/zimbra.com/ec2-13-127-151-6.ap-south-1.compute.amazonaws.com/g' ~/repo/zm-soap-harness/conf/global.properties
-       
-   execute_tests:
-      executor: default-executor 
-      steps:
-         - *attach-workspace
-         - run:
-              working_directory: ~/repo/zm-soap-harness
-              command: |
-                sudo apt-get update; sudo apt-get install ant-contrib;
-                sudo ant clean build-soap-data-file Execute_Tests -DtestRoot="data/soapvalidator/MailClient/Auth/auth_basic.xml" -Dsuite="smoke"
 
 workflows :
    version: 2
    main:
       jobs: 
          - setup_prerequisites
-         - set_test_configs :
-            requires:
-               - setup_prerequisites
-         - execute_tests :
-            requires:
-               - set_test_configs  
